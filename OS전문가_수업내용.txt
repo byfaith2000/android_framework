@@ -1,0 +1,830 @@
+
+강사
+김선우 promche@gmail.com
+이레이어 시스템
+
+설문조사
+https://ko.surveymonkey.com/r/7YP3W52
+
+source.android.com : 안드로이드 소스코드 받는 곳
+AP(Application Processor) 제조사는 별도 받음
+
+AOSP = Android Open Source Project
+
+Notepad++
+
+예제 압축파일암호 : edu123
+pdf 문서 암호 : samsunginternal
+Day2 암호 : edu123
+
+
+
+C:\Users\byfai\AppData\Local\Android\Sdk
+※ Software Development kit(SDK)
+
+adb.exe 있는 곳의 경로를 복사한다. 
+C:\Users\byfai\AppData\Local\Android\Sdk\platform-tools
+
+환경 변수 등록
+내 PC > 속성 > 고급 시스템 설정 > 환경변수 > 시스템 변수에서 path 클릭 후 편집, 새로 만들기에서 위 주소 넣고 확인
+사용자 변수에서 Path가 있으면 편집, 없으면 새로 만들기, 그냥 새로 만들기해서 위 주소 붙여넣기 하면 됨
+
+명령 프롬프트 실행해서 adb version 입력 후 엔터하면 버전 보임
+
+adb는 안드로이드 개발도구이다. 언제든 실행할 수 있는 상태를 만들기 위해서는 환경 변수가 필요하다. 
+
+
+Package name이 다른 사람과 충돌되면 안됨.(같은 이름 사용 안됨)==> com.samsung.example.hello
+
+
+
+
+C:\Users\byfai\AppData\Local\Android\Sdk\system-images\android-32\google_apis\x86_64<=용량이 크다.
+
+
+그냥 X86은 32비트,  그럼 X86_64는 64비트?
+
+
+
+
+
+File > 세팅 > 검색 emulator > Launch in a tool window 체크 제거 하면 에뮬레이터를 독립적으로 실행
+
+Device Manager > Create device > 넥스트 > X86 Images > 원하는 디바이스 선택 후 넥스트 > Show Advanced Settings > 
+cold boot, Enable Device Frame 언체크
+
+
+intel vt-x 활성화로 구글링
+
+앱 서명하기
+Build > Generate Signed Bundle or APK 
+APK 는 자유롭게 배포하는 것 
+
+apk만드는 법_220222.txt 참조.
+
+
+(오후수업)
+cmd창에 adb devices라 입력하고 엔터하면 device 뜸
+
+cmd창에 adb -s emulator-5554 shell 엔터(에뮬레이터 2개인 경우)
+
+숫자에 클릭 -> 붉은 점, 이 상태에서 Run > Debug app 그러면 점 있는 부분에서 멈춘다. 이상태에서 resume 누르면 최종 실행됨.
+
+usb debug On 되면 adbd가 내부적으로 뜨게 됨(4p)
+
+(4p)adb 서버 -> 컴터밑에 오른쪽 클릭 > 작업 관리자 > 이름 정렬하면 adb.exe 보임, 삭제해도 다시 사용하면 재동작됨
+
+앱 프로젝트
+ - 앱을 만드는 데 필요한 파일들의 집합
+ - 코드(Java or Kotlin)  + 리소스     +   매니페스트(Manifest) - 승객명단(사전적 의미)
+  ---------------------    ---------       ------------------------
+  직접 작성, 자동 생성   .xml, 그림, ...    지도와 같다..
+
+apk안에 위 3개 들어 있다. (release안에 app-release.apk를 알집으로 보면 있다. 
+
+classes.dex가 코드가 들어 있는 곳
+리소스는 res파일과 resources.arsc 이다.
+매니페스트는 AndroidManifest.xml이다. 
+※METS-INF는 서명관련
+
+
+(에뮬레이터 2개일때) 명령어로 apk설치
+탐색기 > 파일 > windows powershell
+
+PS D:\app_project\Mytest\app\release> adb -s emulator-5554 install .\app-release.apk
+Performing Streamed Install
+Success
+PS D:\app_project\Mytest\app\release>
+
+삭제할 때
+PS D:\app_project\Mytest\app\release> adb -s emulator-5554 uninstall com.samsung.example.mytest
+Success
+
+com.samsung.example.mytest는 build.gradle안에 있는 applicationId임.
+
+5p
+자바 코드가 내부 거쳐서  classes.dex로 최종 변환된다. 
+
+2p
+operating system은 리눅스
+middleware에 의해 안드로이드
+또 그 위
+
+3p
+리눅스는 운영체제임
+
+cmd에서
+C:\Users\byfai>adb shell
+generic_x86:/ $ uname -r
+3.18.91+
+generic_x86:/ $ cat /proc/version
+Linux version 3.18.91+ (android-build@xpcd3.ams.corp.google.com) (gcc version 4.9 20140827 (prerelease) (GCC) ) #1 SMP PREEMPT Thu Jan 25 02:43:49 UTC 2018
+generic_x86:/ $
+-->현재 리눅스 버전에 대한 상세버전
+
+3p
+앱을 실행할 때 Activity Manager 필요
+앱 설치 삭제시 Package Manager 필요
+앱의 위치정보 확인시 Location Manger 필요
+
+앱은 프레임워크와 통신만 하면 된다. 
+
+알람은 Notification Manager 필요
+
+안드로이드의 특화기능은 프레임웍에 들어있다, 제조사 프레임워크도 들어감
+
+
+11p~12p
+안드로이드 전체 소스(표준 소스 코드)
+
+art => 코드 해석기, 요즘은 플레이스토어에서 업데이트 가능
+bionic=>기억하라, 3p Libc 필수 들어가야 하는 것, 여러가지 앱을 실행시 
+자바코드가 있고 art로 코드 해석하고, C언어 계열의 코드가 있다. C라이브러리, Bionic C라이브러리, 여기에 코드 넣으면 모든 앱에 영향을 준다. 
+디버깅에 도움이 되는 것도 여기에 있다. 
+
+build => 안드로이드 빌드 시스템(영상)
+
+device ->device 디렉토리, 기기 특화적인 내용
+
+external 디렉토리 => 10G, 외부에서 개발된 것을 안드로이드에서 끌어 씀
+
+소스 코드에서 제일 큰 것은 Library이다. 이건 external이다. (SQLite등)
+
+구글이 많이 일한 것->frameworks  구글이 기여
+
+HAL = hardware Abstraction Layer/Library
+
+리눅스 OS는 장치 드라이브 소스코드를 변경해야 될 경우가 있다. (윈도우는 안해도 됨)
+인터페이스가 안정적이지 않다. 
+OS를 교체했을 때 라이브러리 코드를 변경해야 함
+
+10p HAL은 hardware 폴더에 들어 있다. 약자나 개념 정도만 알도록...
+
+libcore ->런타임에 Core Library가 있는데 구글은 Apach Harmony project로 씀(재산권때문에) 자바 핵심 라이브러리임, 구글과 오라클 사이 분쟁
+
+libnativehelper : C언어는 native언어(C/C++), Java는 Dalvik에서 번역해서 사용, C언어와 Java 간 상호작용에 필요한 도움을 주는 것
+
+packages : 내장앱에 소스 코드가 있다?(영상), 기기만 있어도 내부를 알 수 있다. 꺼내보더라도 제약이 없다. 
+
+prebuilts : 빌더할 때 사용, 안드로이드 전체 구성요소와 상관없다?
+
+스튜디오 >  Run > Select APK to analyze 에서 
+
+
+system : 
+
+vendor : 유일하게 오픈 소스가 아니다. 
+
+
+13p
+Android Boot Sequence
+
+Linux 부팅 절차(13p)- 아래 번호순
+
+5. init : 리눅스에서 최초로 실행되는 프로그램
+
+4. Linux 커널 : 내부 자료 초기화, HW 초기화, ...
+
+3. (BIOS) + Bootloader(반드시 있다.) : HW점검/초기화, Linux 커널/램디스크를 (메모리에) 로딩
+※ BIOS는 PC가 아니면 건너뜀
+C:\Users\byfai\AppData\Local\Android\Sdk\system-images\android-32\google_apis\x86_64안에 kernel, ramdisk가 이것과 연관
+
+2. CPU reset : 특정위치의 코드를 가져와 실행한다. 
+
+1. Power On 
+
+C:\Users\byfai>adb shell
+generic_x86:/ $ ps
+
+127|generic_x86:/ $ ps -e
+하면 PID(프로세스ID) init이 1번 paring이 0번
+
+Daemon(s) - 수호신 뜻 , 부팅할 때 시스템을 위한 특별한... init이 부모 프로세스, 그 위가 자식 프로세스, 이건 계속 실행되게 된다?? init 위 4개를 daemon
+
+
+generic_x86:/ $ ps -e | grep -i d$ =>d로 끝나는 것 모두 찾음 ==>daemon 프로세스이다. 
+logd, rild, lmkd
+LMK = Low Memory Killer
+
+
+
+22.5.18(둘째날)
+
+
+
+부팅 후 최초 실행되는 프로그램이 init이다. 
+adbd는 통신과 연관된 것이다. 
+
+13p
+cmd창에서
+C:\Users\byfai>adb shell
+emulator64_x86_64_arm64:/ $ ps -e (ps e옵션)
+
+->PID 1번이 첫번째 실행
+
+PID 2번 kthreadd : 커널 스레드 PPID 2번, 모두 대괄호 형태
+
+서비스 매니저
+cmd창에서
+emulator64_x86_64_arm64:/ $ ps -e | grep manager  -->manager로 끝나는 것 찾기
+2개 나옴..
+매니저 : 특별한 기능을 제공하는...
+
+내컴 win + x 에서 서비스...의 목록과 비슷한 것
+
+한군데서 목록을 관리하는 것이 서비스매니저
+
+cmd창
+emulator64_x86_64_arm64:/ $ service list
+총 220개이고 맨처음 실행된게 220번(역순이다..)
+
+init이 자식을 모니터링하다가 죽으면 다시 살림
+
+mediaserver
+cmd창
+emulator64_x86_64_arm64:/ $ ps -e | grep server$==>5개 뜸, systemserver, mediaserver 등...
+|는 파이프, 통과의 의미
+세분화 이유는 안전성(속도보다는), 한 곳에 기능을 다 몰아넣으면 안전성이 좀 안 좋음
+
+zygote
+cmd창
+127|emulator64_x86_64_arm64:/ $ ps -e | grep zygote
+
+자이고트는 모든 안드로이드 앱의 부모역할을 한다. 
+홈화면 앱은 런처
+자이고트는 아주 중요한 역할
+emulator64_x86_64_arm64:/ $ ps -e
+358로 끝나는 것 찾기
+358로 되는 것은 자바로 된 것들이다. 
+emulator64_x86_64_arm64:/ $ ps -e | grep 358 실행안됨
+
+emulator64_x86_64_arm64:/ $ ps -e | gerp zygote
+
+자이고트가 대기하다가 앱을 하나 하나 실행해 준다. 자이고트가 죽으면 심각한 오류
+
+
+15p
+파일 시스템 레이아웃
+
+emulator64_x86_64_arm64:/ $ ls --> 디렉토리나 파일 보는 것(목록 보는 것)
+
+emulator64_x86_64_arm64:/ $ su -->switch user 최고 사용자?
+emulator64_x86_64_arm64:/ # ls
+
+별명 정의
+emulator64_x86_64_arm64:/ # alias ls='ls -F'
+emulator64_x86_64_arm64:/ # alias ll='ls -lF'
+emulator64_x86_64_arm64:/ # ls
+
+emulator64_x86_64_arm64:/ # ll
+
+슬래쉬가 붙으면 디렉토리
+골뱅이는 실제 다른 데 가봐야 한다. 
+
+init.emviron.rc*
+init이 읽어 들여 **하는 설정파일을 의미한다. 
+
+emulator64_x86_64_arm64:/ # cd /etc/init
+emulator64_x86_64_arm64:/etc/init # ls
+
+init이 부팅시 디몬 프로세스하는 설정이다. ㅎㅎ
+
+emulator64_x86_64_arm64:/etc/init # cat logd.rc
+
+15p system ~ data_mirror까지 알아야
+
+system에 대부분 들어 있다. 리눅스에는 없고 안드로이드에만 있다. 
+
+2|emulator64_x86_64_arm64:/etc/init # cd /system
+emulator64_x86_64_arm64:/system # ls
+
+emulator64_x86_64_arm64:/system # getprop | wc -l
+=>795
+
+
+윈도우의 환경변수와 비슷 (네임 : value)
+
+emulator64_x86_64_arm64:/system # getprop | grep heap
+-->메모리의 최대용량과 연관이 있다. 
+heapsize --> 안드로이드앱이 사용할 수 있는 최대 메모리
+
+지금 하고 있는 것이 property임.  시스템 프롶
+
+emulator64_x86_64_arm64:/system # setprop
+1|emulator64_x86_64_arm64:/system # whoami
+
+emulator64_x86_64_arm64:/system # setprop mytest samsung
+emulator64_x86_64_arm64:/system # getprop mytest
+
+앱에서 제일 중요한 것이 힙이다. 
+동적 메모리, 필요 없으면 해제, 필요하면 연결???
+개발자가 최대크기를 사용하겠다고 하지 않으면 최대크기도 사용할 수 없다. 
+
+최대크기
+[dalvik.vm.heapsize]: [512m]
+
+최대크기 얘기안할 때 기본크기
+[dalvik.vm.heapgrowthlimit]: [192m]
+
+Java / Kotlin + C/C++ <--앱 언어이고 C/C++는 메모리 크기 제약이 없다. 
+
+emulator64_x86_64_arm64:/system # cd bin
+emulator64_x86_64_arm64:/system/bin # ls
+-->온갖 명령이 있다. 안드로이드에 특화된 명령어도 있다. 
+
+
+emulator64_x86_64_arm64:/system/bin # cd ..
+emulator64_x86_64_arm64:/system # cd app
+emulator64_x86_64_arm64:/system/app # ls
+
+-->독립된 앱이다. 
+
+emulator64_x86_64_arm64:/system/app # cd EasterEgg/
+emulator64_x86_64_arm64:/system/app/EasterEgg # ll
+
+시스템 디렉토리는 읽기 전용이다. (쓰기 못함)
+
+emulator64_x86_64_arm64:/system/app/EasterEgg # cd /system
+emulator64_x86_64_arm64:/system # cd priv-app
+emulator64_x86_64_arm64:/system/priv-app # ls
+여기에도 시스템 앱이 모여 있다. 다 내장된 앱이다. 
+
+
+emulator64_x86_64_arm64:/system/priv-app # cd /system/framework
+emulator64_x86_64_arm64:/system/framework # ls
+
+
+emulator64_x86_64_arm64:/system/lib64 # cd /system/vendor
+emulator64_x86_64_arm64:/system/vendor # cd /vendor
+emulator64_x86_64_arm64:/system/vendor # ls
+
+emulator64_x86_64_arm64:/system/vendor....
+
+결론 : 시스템에 대부분 들어있고 읽기 전용이다. 
+
+제조사에서는 시스템 건드리지 말고 vendor에 넣어라 <--요즘 추세
+
+
+data디렉토리는 아무나 접근할 수 없다. data는 매우 위험하다. 읽고 쓰기가 가능하다. 아무에게나 공개하지 않는다. 
+
+빠져나올 때
+emulator64_x86_64_arm64:/system # exit
+emulator64_x86_64_arm64:/ $ exit
+
+C:\Users\byfai>adb shell
+emulator64_x86_64_arm64:/ $ cd data
+emulator64_x86_64_arm64:/data $ ls
+ls: .: Permission denied
+1|emulator64_x86_64_arm64:/data $
+
+아래로 해야 보임
+1|emulator64_x86_64_arm64:/data $ su
+emulator64_x86_64_arm64:/data # ls
+
+emulator64_x86_64_arm64:/data # alias ls='ls -F'
+emulator64_x86_64_arm64:/data # alias ll='ls -lF'
+emulator64_x86_64_arm64:/data # cd app
+emulator64_x86_64_arm64:/data/app # ls
+~~369HAqhVt-BhEwZNxgANkg==/  ~~NzIVYOoKU4h0ujeFcwnyWw==/  ~~bg36ms6t3x0m4iQ3ikqMKQ==/  ~~vmfJ2taBn4QmfkEMcCjtJw==/
+emulator64_x86_64_arm64:/data/app #
+
+데이타앱은 설치된 응용프로그램
+
+emulator64_x86_64_arm64:/data/app #에서 위 ~~붙여넣어서 검색
+
+삭제 가능한 앱은 데이타 디렉토리에 있다. 
+플레이스토어 앱은 모두 데이타 디렉토리에 있다.
+
+여기에 응용프로그램의 
+
+
+emulator64_x86_64_arm64:/data/app # cd /data/data
+emulator64_x86_64_arm64:/data/data # ls
+
+연락처, 일정등도 여기 안에 있다. 
+
+data/property (영상) 
+->수정 가능하다. 재부팅하더라도 남아 있다. 
+
+data/tombstones
+
+window shell
+자료 확장자를 apk로 변경
+PS D:\Android Framework\book_src(20201216)> adb install .\TwoLibs_leak[success].apk
+Performing Streamed Install
+Success
+PS D:\Android Framework\book_src(20201216)> adb devices
+List of devices attached
+emulator-5556   device
+
+PS D:\Android Framework\book_src(20201216)> adb -s emulator-5556 install .\TwoLibs_leak[success].apk
+Performing Streamed Install
+Success
+PS D:\Android Framework\book_src(20201216)>
+
+
+cmd
+emulator64_x86_64_arm64:/data # cd tombstones/
+emulator64_x86_64_arm64:/data/tombstones # ll
+시스템 최고 사용자가 아님 꺼낼 수 없다. 일반 폰 안됨, 개발용 폰은 가능함.
+
+C:\Users\byfai>adb root
+restarting adbd as root
+
+C:\Users\byfai>adb devices
+List of devices attached
+emulator-5556   device
+
+
+C:\Users\byfai>adb -s emulator-5556 root
+adbd is already running as root
+
+C:\Users\byfai>  <==꺼낸 위치 잘 파악해야 함.
+
+C:\Users\byfai>adb pull /data/tombstones/tombstone_00
+/data/tombstones/tombstone_00: 1 file pulled, 0 skipped. 55.8 MB/s (369987 bytes in 0.006s)
+
+C:\Users\byfai>에 tombstone_00생성됨
+노트패드 열면 문제 원인이 나옴
+
+signal 11 (SIGSEGV), code 1 (SEGV_MAPERR), fault addr 0x0
+Cause: null pointer dereference
+
+backtrace:
+
+툼스톤 : 특수한 상황에서 로그 남기는 것 과 비슷
+
+Core Dump : 시스템이 죽으면 현재 실행파일에 시체를 남긴다. 
+그런데 그 디렉터리가 읽기 전용이면 로그 못쓴다. 
+core dump의 모음이 tombstone이다. 
+
+storage
+whoami가  root이면 괜찮다. 권한제약없음.
+
+emulator64_x86_64_arm64:/sdcard # cd
+emulator64_x86_64_arm64:/ # ls -lF
+
+아래 보임
+lrw-r--r--   1 root   root         21 2021-12-20 15:52 sdcard -> /storage/self/primary@
+
+sdcard는 외부에서 꽂는 것만 의미하는 것이 아니라 시스템이 차지하는 공간 제외한 사용자가 사용가능한 메모리를 말한다. 
+거기에 물리적으로 외부 메모리를 사용하면 경로가 다르게 나온다. 
+sdcard는 어느 폰에나 다 있다. 
+
+emulator64_x86_64_arm64:/ # cd /sdcard
+emulator64_x86_64_arm64:/sdcard # ls
+Alarms   Audiobooks  Documents  Movies  Notifications  Podcasts    Ringtones
+Android  DCIM        Download   Music   Pictures       Recordings
+emulator64_x86_64_arm64:/sdcard # cd Android
+emulator64_x86_64_arm64:/sdcard/Android # ls
+data  media  obb
+emulator64_x86_64_arm64:/sdcard/Android # ls
+data  media  obb
+emulator64_x86_64_arm64:/sdcard/Android # cd data
+emulator64_x86_64_arm64:/sdcard/Android/data # ls
+com.google.android.apps.docs           com.google.android.gm                    com.google.android.youtube
+com.google.android.apps.maps           com.google.android.gms
+com.google.android.apps.youtube.music  com.google.android.googlequicksearchbox
+emulator64_x86_64_arm64:/sdcard/Android/data # <==응용프로그램의 고유 데이타가 저장되는 곳, 앱 삭제시 데이타도 삭제
+
+
+(오후시간)
+sdcard/DCIM등은 앱 날라가도 데이타 남는다. sdcard/Android는 날라간다. 
+
+17p 이후
+(영상)
+boot.img <==일반적으로 부팅할 때
+ = Linux kernel + RAM disk
+recovery.img <==복구할 때
+ = Linux kernel + RAM disk  <==기기를 원상복구하기 위한 기능이 들어 있다. 
+
+18p
+
+emulator64_x86_64_arm64:/sdcard/Android/data # cd / <--최상위 디렉토리
+emulator64_x86_64_arm64:/ # ls
+
+Android10의 큰 변경점 :  핵심요소를 플레이 스토어에서 업데이트할 수 있다. 
+
+cmd창
+emulator64_x86_64_arm64:/ # cd apex
+127|emulator64_x86_64_arm64:/apex # ls
+
+emulator64_x86_64_arm64:/apex # ls -F
+
+
+dev:전통 리눅스에 다 있는 것
+emulator64_x86_64_arm64:/apex # cd
+emulator64_x86_64_arm64:/ # alias ls='ls -F'
+
+emulator64_x86_64_arm64:/ # cd /dev
+emulator64_x86_64_arm64:/dev # ls
+
+22p
+proc
+리눅스 알면 알 수 있따. 
+
+
+하나하나의 번호는 
+메모리 내용
+
+emulator64_x86_64_arm64:/dev # cd ...
+/system/bin/sh: cd: /dev/...: No such file or directory
+2|emulator64_x86_64_arm64:/dev # cd /proc
+emulator64_x86_64_arm64:/proc # ls
+
+calculator 앱 열고나서..
+emulator64_x86_64_arm64:/proc # ps -e | grep calcu
+u0_a148       8047   373 13812220 135060 do_epoll_wait      0 S andbook.example.calculator
+2|emulator64_x86_64_arm64:/proc # cd 8047
+emulator64_x86_64_arm64:/proc/8047 # ls
+
+2|emulator64_x86_64_arm64:/proc/8047 # cd ..
+emulator64_x86_64_arm64:/proc # kill 8047
+emulator64_x86_64_arm64:/proc #
+리눅스 입장에서 앱도 하나의 앱이다..
+
+
+emulator64_x86_64_arm64:/proc # ps -e | grep calcu
+u0_a148      10156   373 13854036 123908 do_epoll_wait      0 S andbook.example.calculator
+emulator64_x86_64_arm64:/proc # cd 10156
+emulator64_x86_64_arm64:/proc/10156 # ls
+arch_status  comm             fd/         maps        ns/            root@         stack    time_in_state
+attr/        coredump_filter  fdinfo/     mem         oom_adj        sched         stat     timerslack_ns
+auxv         cpuset           io          mountinfo   oom_score      schedstat     statm    wchan
+cgroup       cwd@             limits      mounts      oom_score_adj  sessionid     status
+clear_refs   environ          loginuid    mountstats  pagemap        smaps         syscall
+cmdline      exe@             map_files/  net/        personality    smaps_rollup  task/
+emulator64_x86_64_arm64:/proc/10156 # cd fd
+emulator64_x86_64_arm64:/proc/10156/fd # ls
+
+emulator64_x86_64_arm64:/proc/10156 # cd fd
+emulator64_x86_64_arm64:/proc/10156/fd # ls
+
+emulator64_x86_64_arm64:/proc/10156/fd # cd /proc
+emulator64_x86_64_arm64:/proc # ls
+
+emulator64_x86_64_arm64:/proc # cat version <--버전 알 수 있는 곳
+
+유명한 것 (영상)
+emulator64_x86_64_arm64:/proc # cd ..
+emulator64_x86_64_arm64:/ # cd proc
+emulator64_x86_64_arm64:/proc # cd sys
+emulator64_x86_64_arm64:/proc/sys # cd kernel
+emulator64_x86_64_arm64:/proc/sys/kernel # ls
+
+whoami해서 shell나오면 su하고 whoami하면  root가 됨.
+
+emulator64_x86_64_arm64:/proc/sys/kernel # cd ..
+emulator64_x86_64_arm64:/proc/sys # cd ..
+emulator64_x86_64_arm64:/proc # cd /data/local/tmp
+emulator64_x86_64_arm64:/data/local/tmp # mkdir myproc
+emulator64_x86_64_arm64:/data/local/tmp # cd myproc
+emulator64_x86_64_arm64:/data/local/tmp/myproc # ls
+emulator64_x86_64_arm64:/data/local/tmp/myproc # cd ..
+emulator64_x86_64_arm64:/data/local/tmp # mount -t proc none ./myproc
+emulator64_x86_64_arm64:/data/local/tmp # cd myproc
+emulator64_x86_64_arm64:/data/local/tmp/myproc # ls
+(영상참조)
+
+/sys/ (영상)
+/proc : Process 정보
+/sys : Device 정보
+
+
+ppt 47p
+
+C:\Users\byfai>adb devices
+List of devices attached
+emulator-5554   device
+
+
+C:\Users\byfai>adb shell
+generic_x86:/ $ whoami
+shell
+generic_x86:/ $ su
+generic_x86:/ # whoami
+root
+generic_x86:/ # ps -e | grep -i apptest
+u0_a81        4789  1529 1434720  72328 ep_poll      ecb73af0 S com.samsung.example.apptest
+generic_x86:/ #
+
+AppTest1, 2 만들고 나서
+generic_x86:/ # ps -e | grep -i apptest
+u0_a81        4789  1529 1412560  71376 ep_poll      ecb73af0 S com.samsung.example.apptest
+u0_a82        5025  1529 1434724  72624 ep_poll      ecb73af0 S com.samsung.example.apptest2
+
+리눅스는 2개 프로그램 실행해도 유저 id는 1개, 안드로이드는 유저 id 2개
+
+안드로이드에서 다른 앱이 저장된 곳을 접근할 수 없다. 
+
+
+안드로이드앱은 진입점이 여러개이다. ppt49
+앱 안에 있는 각 컴포넌트에 다른 앱이 진입할 수 있다.(연락처화면에서 사진촬영화면 진입)
+컴포넌트는 4개이다. : Activity, Service, Broadcast Receiver, Content Provider
+
+* Android 앱 구성 요소
+(1) Activity
+ -앱 화면과 1:1대응한다.
+ -화면 출력과 사용자 입력을 담당한다. 
+[용어] Task = Activity들의 집합
+
+AppCompatActivity에서 ctr + Q 눌러 extend만 계속 따라가면 최종 Activity 나옴
+
+(2) Service
+- 백그라운드 수행을 담당한다. 액티비티와 약간 반대(보이지 않는 데 실행한다.)
+[참고] 리눅스에서의 것은 시스템 서비스, 여기서는 애플리케이션 서비스 ->응용프로그램 안에서 보이지 않게 동작
+
+서비스 추가시 뜬 팝업에서 Exported 체크하면 외부에서 내 서비스에 접근 가능, 체크 안하면 나만 사용하다??
+
+★ 서비스는 싱글 스레드이다. 
+
+
+
+22.5.19
+
+class이름에 ctr + 클릭하면 바로 넘어간다. 
+
+(3) 브로드 캐스트 수신기 (app > new > other > )
+ - 사건(Event : HW, SW)을 처리한다. 
+  receiver는 무조건 exported true여야 한다. 외부에서 이벤트가 들어와야 하므로??
+  broadcast announce <--사건을 날리면 리시버에서 반응
+
+ * 리시버테스트 앱을 백키로 종료하고 실제 리눅스에서는 종료안된 것을 확인할 때
+ cmd창
+C:\Users\byfai>adb shell
+generic_x86:/ $ su
+generic_x86:/ # whoami
+root
+generic_x86:/ # ps -e | grep -i receiver
+u0_a86        6007  1568 1413776  77848 ep_poll      eb8acaf0 S com.samsung.example.receivertest
+
+리센트로 앱을 날리면 프로세스를 kill시키는 것임, 위 cmd창 확인해보면 앎
+
+이후 시간대 변경하면 토스트 뜸, 이것은 때가 되면 OS가 다시 프로세스를 살린다는 의미(사건이 발생하면 살리고, 다음 죽고...반복)
+이렇게 작동하는 것이 receiver이다. 
+
+(4) Content Provider(컨텐츠 제공자)
+ - 앱 데이터를 공개(=공유)한다. 
+
+팝업창에 URI
+URL과 비슷하다. 
+
+URL(Uniform Resource Locator)
+ 예) www.samsung.com/test/sample.jpg
+
+URI(Uniform Resource Identifier) URI는 보다 폭넓은 개념(URL을 포함한다.)
+
+URI Authorities에 com.samsung.test.myuri넣는다.(충돌되지 않게 최대 복잡하게) <--이 데이타를 외부에 공개할 때 **하는 주소이다. 
+
+주소록에 이름 추가
+
+C:\Users\byfai>adb root <--이렇게 하면 에뮬 모든 작업 가능(일반 폰 안됨)
+restarting adbd as root 
+
+C:\Users\byfai>adb unroot <--유저용
+
+주소록에 데이타 입력한다고 주소록에 저장되는 게 아니고 com.android.proviers.contacts내 database에 있음
+데이타를 유지, 관리하는 컴포넌트는 따로 있다. 그러므로 다른 캘린더를 사용할 수 있다. 
+
+
+ppt 15(동영상)
+130|generic_x86:/ $ logcat | grep -i preloading
+05-18 19:22:21.889  1563  1563 I Zygote  : Preloading ICU data...
+05-18 19:22:21.917  1563  1563 I Zygote  : Preloading classes...  //시간이 제일 많이 걸림
+05-18 19:22:22.108  1563  1563 W Zygote  : Class not found for preloading: android.icu.impl.number.Parse
+05-18 19:22:22.259  1563  1563 I Zygote  : Preloading resources...
+05-18 19:22:22.325  1563  1563 I Zygote  : Preloading shared libraries...
+
+
+C:\Users\byfai>adb logcat | findstr /I preload //로그 정보 확인하는 방법
+
+05-18 19:22:22.179  1563  1563 I Zygote  : ...preloaded 4715 classes in 262ms. //4715개 클래스를 preloading한다. 
+preloading의 주체는 Zygote
+
+31p
+UNIX 시스템
+ - Linux
+ - macOS
+ - ...
+
+C:\Users\byfai>
+C:\Users\byfai>adb shell
+generic_x86:/ $ ps -e | grep -i zygote
+root          1563     1 1317396 113380 poll_schedule_timeout 0 S zygote
+webview_zygote 1861    1 1094096  60196 poll_schedule_timeout 0 S webview_zygote32
+generic_x86:/ $ ps -e | grep -i 1563
+
+ppt54
+Activity, Services, Providers는 100% Manifest에 있다. 
+Receivers는 Manifest에 선언할 수도 안할 수도 있다. 동적 생성이 가능하다.(코드로 정의될 수 있음)
+
+D:\Android Framework\source(AS-4.1.1)\Chapter10 >DetectSystemEvent 실행
+
+Receivers에서 특정 구간에서만 이벤트 받아서 동작하고 싶다-->Manifest에 정의하지 말고 코드레벨에서 정의해야 함.
+
+하나의 receiver 안에 여러 개의 이벤트를 받을 수 있다.
+<action android:name="android.intent.action.BOOT_COMPLETED"/>
+            </intent-filter>
+            <intent-filter>
+<action android:name="android.intent.action.TIMEZONE_CHANGED"/>
+
+
+ppt61
+
+Activity Lifecycle
+※ Receivers : 평상시 죽어 있다가 이벤트 받으면 살아나고 다시 끝나면 죽음.
+
+ppt62
+
+ppt55
+Contents provider는 Intent와 상관없다. 
+
+ppt56
+명시적(Explicit, 의도가 명확) 인텐트와 암시적(Implicit, 의도가 모호) 인텐트가 있다.
+
+ppt57
+am (activity manager)
+
+* Implicit Intent
+액션 : ~을 하고 싶다.  [Activity, Service]
+        ~사건이 발생했다. [Broadcast]
+데이터 : 데이터의 위치 and/or 타입
+카테고리 : Intent 수신 후보를 제한한다. 
+
+ppt58
+암시적 인텐트에서 ~을 하고 싶다고 날려주면 A의 액션은 나는 무슨 일을 할 수 있다 '....이렇게 매칭이 되면 후보가 됨.
+매칭이 되면 활성화 됨. 후보가 보이는 것만으로는 활성화 되는 것은 아님.
+
+8강? > Implicity > Manifest
+
+        <activity android:name=".MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN"/> //나는 이러한 일을 할 수 있다.  아무 이름 적어도 됨.
+                <category android:name="android.intent.category.LAUNCHER"/>//나는 이런 카테고리에 속해 있다.  카테고리는 안드로이드에서 이름이 정해져 있음.
+            </intent-filter>
+        </activity>
+
+            <intent-filter>
+                <action android:name="andbook.example.implicitintents.TEST2"/>
+                <data android:mimeType="image/*"/> //나는 이러한 데이타를 취급할 수 있다??
+                <category android:name="android.intent.category.DEFAULT"/> //이게 원래 메인 액티비티에 있어야 하나 빠져 있음. 이게 있으면 메인 액티비티 후보에 보임
+            </intent-filter>
+
+에뮬 띄운 상태에서
+C:\Users\byfai>adb shell
+generic_x86:/ $ am start-activity -a android.intent.action.VIEW //-a는 activity
+Starting: Intent { act=android.intent.action.VIEW }
+
+
+adb shell am start-activity -n com.android.egg/com.android.egg.octo.Ocquarium //-n은 name (영상)
+
+
+60p 중요, 자동화 am
+
+서비스 라이프 사이클은 넘어감
+
+ppt 67
+
+*프로세스(실행 중인 프로그램)의 메모리 공간
+프로그램은 동적 개념
+
+Code : 크기 고정, 읽기 전용
+
+Data : (코드를 제외한 전체) 크기 고정, 읽기 전용 / 읽기/쓰기
+
+Stack : 크기 가변, 자동 할당 / 자동 해제 [C/C++, Java]
+
+Heap : 크기 가변, 수동 할당 / 자동 해제  [Java]
+                                     -> "GC"(Garbage Collection)
+                       수동 할당 / 수동 해제 [C/C++]
+
+ ※앱별 최대크기가 정해져 있음, 그때 그거를 Heap
+
+
+Profiler > Memory > Capture heap dump > Record > 상부에 Leaks개수 나옴
+
+왼쪽 파란불 있는 부분 단축키 > delete가능
+
+
+cmd창
+C:\Users\byfai>adb root
+restarting adbd as root
+
+C:\Users\byfai>adb shell procrank
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
