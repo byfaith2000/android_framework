@@ -1,0 +1,6 @@
+C:\Users\byfai>adb shell
+emulator64_x86_64_arm64:/ $ ps -e (ps e옵션)
+
+->PID 1번이 첫번째 실행
+
+emulator64_x86_64_arm64:/ $ ps -e | grep manager  -->manager로 끝나는 것 찾기
