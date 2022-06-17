@@ -4,3 +4,6 @@ emulator64_x86_64_arm64:/ $ ps -e (ps e옵션)
 ->PID 1번이 첫번째 실행
 
 emulator64_x86_64_arm64:/ $ ps -e | grep manager  -->manager로 끝나는 것 찾기
+
+emulator64_x86_64_arm64:/ $ service list
+총 220개이고 맨처음 실행된게 220번(역순이다..)
