@@ -32,3 +32,11 @@ emulator64_x86_64_arm64:/system # find -name '*sqlite*'
 ./lib64/libsqlite.so
 ./bin/sqlite3
 emulator64_x86_64_arm64:/system #
+
+
+C:\Users\byfai>adb shell
+generic_x86:/ $ uname -r
+3.18.91+
+generic_x86:/ $ cat /proc/version
+Linux version 3.18.91+ (android-build@xpcd3.ams.corp.google.com) (gcc version 4.9 20140827 (prerelease) (GCC) ) #1 SMP PREEMPT Thu Jan 25 02:43:49 UTC 2018
+generic_x86:/ $
