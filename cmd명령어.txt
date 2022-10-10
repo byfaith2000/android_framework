@@ -7,3 +7,28 @@ emulator64_x86_64_arm64:/ $ ps -e | grep manager  -->manager로 끝나는 것 �
 
 emulator64_x86_64_arm64:/ $ service list
 총 220개이고 맨처음 실행된게 220번(역순이다..)
+
+20220517_150806
+cmd창에서
+C:\Users\byfai>adb -s emulator-5554 shell
+emulator64_x86_64_arm64:/ $ cd system
+emulator64_x86_64_arm64:/system $
+emulator64_x86_64_arm64:/system $ find -name '*sqlite*'
+아래처럼 안보임...
+find: './etc/selinux/plat_hwservice_contexts': Permission denied
+find: './etc/selinux/plat_mac_permissions.xml': Permission denied
+./lib64/arm64/libsqlite.so
+find: './lib64/bootstrap': Permission denied
+./lib64/libsqlite.so
+find: './bin/apexd': Permission denied
+......
+su(switch user) 사용해야 함...안드로이드는 개발자로 사용되기 때문에 최고 사용자가 될 수 있음
+1|emulator64_x86_64_arm64:/system $ su
+emulator64_x86_64_arm64:/system # whoami
+root  =>최고 사용자가 되었다는 의미
+
+emulator64_x86_64_arm64:/system # find -name '*sqlite*'
+./lib64/arm64/libsqlite.so
+./lib64/libsqlite.so
+./bin/sqlite3
+emulator64_x86_64_arm64:/system #
