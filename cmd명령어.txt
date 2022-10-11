@@ -40,3 +40,26 @@ generic_x86:/ $ uname -r
 generic_x86:/ $ cat /proc/version
 Linux version 3.18.91+ (android-build@xpcd3.ams.corp.google.com) (gcc version 4.9 20140827 (prerelease) (GCC) ) #1 SMP PREEMPT Thu Jan 25 02:43:49 UTC 2018
 generic_x86:/ $
+
+
+
+
+C:\Users\byfai>adb devices
+List of devices attached
+emulator-5554   device
+
+
+C:\Users\byfai>adb -s emulator-5554 shell
+generic_x86:/ $
+
+
+
+
+
+
+
+
+
+
+
+
