@@ -42,8 +42,6 @@ Linux version 3.18.91+ (android-build@xpcd3.ams.corp.google.com) (gcc version 4.
 generic_x86:/ $
 
 
-
-
 C:\Users\byfai>adb devices
 List of devices attached
 emulator-5554   device
