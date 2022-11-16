@@ -51,9 +51,10 @@ C:\Users\byfai>adb -s emulator-5554 shell
 generic_x86:/ $
 
 
-
-
-
+C:\Users\byfai>adb shell
+1|generic_x86:/ $ ps -e | grep -i zygote
+root          1526     1 1317396 113476 poll_schedule_timeout 0 S zygote
+webview_zygote 1832    1 1094092  60552 poll_schedule_timeout 0 S webview_zygote32
 
 
 
